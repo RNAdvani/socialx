@@ -1,5 +1,6 @@
 "use client"
 import Background from '@/components/Background'
+import CreatePostComponent from '@/components/CreatePostComponent'
 import CustomDialog from '@/components/Modal'
 import Modal, { DialogHandle } from '@/components/Modal'
 import PostItComponent from '@/components/PostItComponent'
@@ -98,7 +99,7 @@ const page = () => {
         <div>
         </div>
               <CustomDialog ref={dialogRef}>
-                <h1>Hello</h1>
+                <CreatePostComponent />
               </CustomDialog>
             
     </section>

@@ -4,6 +4,7 @@ import React, { useRef, useState } from 'react'
 import { Label } from './ui/label'
 import { Textarea } from './ui/textarea'
 import { Button } from './ui/button'
+import PreviewComponent from './PreviewComponent'
 
 const CreatePostComponent = ({preview}:{preview?:React.ReactNode}) => {
     const [text, setText] = useState("")
@@ -13,6 +14,31 @@ const CreatePostComponent = ({preview}:{preview?:React.ReactNode}) => {
     const handleOpen = ()=>{
         fileInputRef.current?.click()
     }
+
+    const [images, setImages] = useState<File[]>([]);
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedFiles = event.target.files;
+        if (!selectedFiles) return;
+      
+        const newImages: File[] = [];
+        for (let i = 0; i < selectedFiles.length; i++) {
+          const file = selectedFiles[i];
+    
+          if (!/\.(jpg|jpeg|png)$/.test(file.name)) {
+            console.error('Invalid file type. Only jpg, jpeg, and png allowed.');
+            continue;
+          }
+          newImages.push(file);
+        }
+      
+        setImages((prevImages) => [...prevImages, ...newImages]);
+        console.log(images)
+      };
+
+      const handleRemoveImage = (index: number) => {
+        setImages((prevImages) => [...prevImages.slice(0, index), ...prevImages.slice(index + 1)]);
+      };
 
   return (
     <div className='flex w-full gap-4 rounded-xl bg-[#FCFCFC] px-4 py-6 '>
@@ -26,7 +52,7 @@ const CreatePostComponent = ({preview}:{preview?:React.ReactNode}) => {
                     <p className='font-normal text-[9px]'>@northface_12</p>
                 </div>
                 <div className='flex justify-center items-center rounded-full border-2 border-white'>
-                    <Image height={32} className='rounded-full border-2 ' width={32} alt='north face logo' src={"/icons/instagram.jpg"} />
+                    <Image height={32} className='rounded-full border-2 ' width={32} alt='north face logo' src={"/icons/x.svg"} />
                 </div>
             </div>
             <div className='px-4 flex flex-col gap-2'>
@@ -37,13 +63,23 @@ const CreatePostComponent = ({preview}:{preview?:React.ReactNode}) => {
                         <path d="M10.5 0C12.7966 2.73863e-08 15.0298 0.752942 16.8575 2.14347C18.6853 3.53399 20.0067 5.48541 20.6194 7.69873L17.4136 8.58618C16.995 7.07403 16.0922 5.74083 14.8435 4.79082C13.5948 3.84082 12.069 3.32641 10.5 3.32641V0Z" fill="#5E17EB"/>
                         </svg>
                     </p>
+                    <div className='absolute bottom-0 flex gap-2'>
+                    {images.map((image, index) => (
+          <div key={index} className="w-[5rem] h-[5rem] relative border-2 rounded-xl items-center">
+            <img src={URL.createObjectURL(image)} alt={`Preview ${index + 1}`} />
+            <button className="absolute top-0 right-0" onClick={() => handleRemoveImage(index)}>
+              x
+            </button>
+          </div>
+        ))}
+                    </div>
                 </div>
                 <div className='px-4 flex justify-between py-1 border-t-0 rounded-t-none  mt-0 rounded-xl border-[1px]'>
                     <div className='flex gap-4 px-2'>
                         <button onClick={handleOpen}>
                             <Image src={"/icons/gallery.svg"} width={14} height={14} alt='gallery' />
                         </button>
-                        <input type="file" multiple ref={fileInputRef!} className='hidden' />
+                        <input type="file" onChange={handleFileChange} multiple ref={fileInputRef!} className='hidden' />
                         <button>
                             <Image src={"/icons/emoji.svg"} width={14} height={14} alt='gallery' />
                         </button>
@@ -88,6 +124,7 @@ const CreatePostComponent = ({preview}:{preview?:React.ReactNode}) => {
         </div>
         <div className='bg-[#F3F3F3] px-4 flex flex-col justify-center w-[35%] rounded-xl'>
             <h2 className='tracking-[4px] text-[9px] font-medium uppercase'>Preview</h2>
+            <PreviewComponent text={text} />
         </div>
     </div>
   )

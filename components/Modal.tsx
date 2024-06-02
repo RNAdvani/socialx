@@ -40,9 +40,10 @@ import { DialogClose } from "@radix-ui/react-dialog";
         <DialogTrigger asChild>
           <button ref={triggerRef} style={{ display: 'none' }}>Trigger</button>
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className="w-[80vw]">
           {props.children}
-          <DialogClose>Close</DialogClose>
+          <DialogClose>
+          </DialogClose>
         </DialogContent>
       </Dialog>
     );
