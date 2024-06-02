@@ -9,6 +9,7 @@ import {
 import { DialogClose } from "@radix-ui/react-dialog";
 
   import React, { useImperativeHandle, useRef ,forwardRef} from 'react'
+import CreatePostComponent from "./CreatePostComponent";
 
   interface CustomDialogProps {
     children: React.ReactNode;
@@ -36,14 +37,12 @@ import { DialogClose } from "@radix-ui/react-dialog";
     }));
   
     return (
-      <Dialog>
+      <Dialog >
         <DialogTrigger asChild>
           <button ref={triggerRef} style={{ display: 'none' }}>Trigger</button>
         </DialogTrigger>
         <DialogContent className="w-[80vw]">
           {props.children}
-          <DialogClose>
-          </DialogClose>
         </DialogContent>
       </Dialog>
     );

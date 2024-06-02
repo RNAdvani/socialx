@@ -41,8 +41,9 @@ const CreatePostComponent = ({preview}:{preview?:React.ReactNode}) => {
       };
 
   return (
-    <div className='flex w-full gap-4 rounded-xl bg-[#FCFCFC] px-4 py-6 '>
-        <div className='flex flex-col border-[1px] border-[#BCBCBC6E] w-[65%] pb-4 rounded-xl'>
+    <div className='w-full'>
+        <div className='flex w-full gap-4 rounded-xl bg-[#FCFCFC] px-4 py-6 '>
+        <div className='flex flex-col border-[1px] border-[#BCBCBC6E] w-[50rem] pb-4 rounded-xl'>
             <div className="flex gap-3 p-4 py-4">
                 <div className='flex justify-center items-center'>
                     <Image height={32} className='rounded-full' width={32} alt='north face logo' src={"/northface.png"} />
@@ -122,10 +123,15 @@ const CreatePostComponent = ({preview}:{preview?:React.ReactNode}) => {
                 </div>
             </div>
         </div>
-        <div className='bg-[#F3F3F3] px-4 flex flex-col justify-center w-[35%] rounded-xl'>
+        <div className='bg-[#F3F3F3] px-4 flex flex-col justify-center w-[20rem] rounded-xl'>
             <h2 className='tracking-[4px] text-[9px] font-medium uppercase'>Preview</h2>
             <PreviewComponent text={text} />
         </div>
+        
+    </div>
+    <div >
+
+    </div>
     </div>
   )
 }

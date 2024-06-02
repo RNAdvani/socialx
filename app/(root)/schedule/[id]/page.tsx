@@ -21,6 +21,7 @@ const page = () => {
     }
   };
   return (
+    <>
     <section className='relative  w-full flex flex-col  no-scrollbar '>
            <div className='px-8 flex justify-between items-center p-2'>
               <h1 className='text-[#34303B] font-semibold text-[18px]'>Schedule</h1>
@@ -98,11 +99,13 @@ const page = () => {
         </div>
         <div>
         </div>
-              <CustomDialog ref={dialogRef}>
-                <CreatePostComponent />
-              </CustomDialog>
+             
             
     </section>
+    <CustomDialog  ref={dialogRef}>
+      <CreatePostComponent />
+      </CustomDialog>
+    </>
   )
 }
 
