@@ -64,11 +64,11 @@ const CreatePostComponent = ({preview}:{preview?:React.ReactNode}) => {
                         <path d="M10.5 0C12.7966 2.73863e-08 15.0298 0.752942 16.8575 2.14347C18.6853 3.53399 20.0067 5.48541 20.6194 7.69873L17.4136 8.58618C16.995 7.07403 16.0922 5.74083 14.8435 4.79082C13.5948 3.84082 12.069 3.32641 10.5 3.32641V0Z" fill="#5E17EB"/>
                         </svg>
                     </p>
-                    <div className='absolute bottom-0 flex gap-2'>
+                    <div className='absolute p-2 bottom-0 flex gap-2'>
                     {images.map((image, index) => (
-          <div key={index} className="w-[5rem] h-[5rem] relative border-2 rounded-xl items-center">
+          <div key={index} className="w-[5rem]  h-[5rem] relative border-2 flex items-center rounded-xl">
             <img src={URL.createObjectURL(image)} alt={`Preview ${index + 1}`} />
-            <button className="absolute top-0 right-0" onClick={() => handleRemoveImage(index)}>
+            <button className="absolute text-[12px] top-[-.5rem] right-[-0.2rem] bg-[#e5f2ff] w-[1rem]  rounded" onClick={() => handleRemoveImage(index)}>
               x
             </button>
           </div>
@@ -125,7 +125,7 @@ const CreatePostComponent = ({preview}:{preview?:React.ReactNode}) => {
         </div>
         <div className='bg-[#F3F3F3] px-4 flex flex-col justify-center w-[20rem] rounded-xl'>
             <h2 className='tracking-[4px] text-[9px] font-medium uppercase'>Preview</h2>
-            <PreviewComponent text={text} />
+            <PreviewComponent images={images} text={text} />
         </div>
         
     </div>
