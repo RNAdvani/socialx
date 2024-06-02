@@ -129,9 +129,21 @@ const CreatePostComponent = ({preview}:{preview?:React.ReactNode}) => {
         </div>
         
     </div>
-    <div >
-
-    </div>
+        <div className='w-full flex justify-between'>
+            <div>
+                <button className='text-[12px] font-medium text-black bg-white border-[1px] border-black items-center gap-1 flex p-2 rounded-2xl px-4'>
+                    Save as Draft
+                </button>
+            </div>
+            <div className='flex gap-4'>
+                <button className='text-[12px] font-medium text-black bg-white border-[1px] border-black items-center gap-1 flex p-2 rounded-2xl px-4'>
+                    Start Thread
+                </button>
+                <button className='button-gradient text-[12px] font-medium items-center gap-1 text-white flex p-2 rounded-3xl px-4'>
+                   Schedule Post
+                </button>
+            </div>
+        </div>
     </div>
   )
 }
