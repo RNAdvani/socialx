@@ -9,7 +9,6 @@ const Header = () => {
     const path = usePathname().split("/")[1];
     const updatedPath = path.charAt(0).toUpperCase() + path.slice(1);
 
-
   return (
     <header className='bg-white h-[3.25rem] flex items-center justify-between header-box-shadow p-[0.8rem]'>
             <h1 className='text-[#34303B] font-semibold text-[18px]'>{updatedPath}</h1>

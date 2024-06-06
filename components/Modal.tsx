@@ -41,7 +41,7 @@ import CreatePostComponent from "./CreatePostComponent";
         <DialogTrigger asChild>
           <button ref={triggerRef} style={{ display: 'none' }}>Trigger</button>
         </DialogTrigger>
-        <DialogContent className="w-full">
+        <DialogContent className="w-fit p-0 ">
           {props.children}
         </DialogContent>
       </Dialog>

@@ -5,10 +5,22 @@ import { Label } from './ui/label'
 import { Textarea } from './ui/textarea'
 import { Button } from './ui/button'
 import PreviewComponent from './PreviewComponent'
+import CustomDialog, { DialogHandle } from './Modal'
+import AIAssistantComponent from './AIAssistantComponent'
+import FacebookPostComponent from './FacebookPostComponent'
 
 const CreatePostComponent = ({preview}:{preview?:React.ReactNode}) => {
     const [text, setText] = useState("")
     const fileInputRef = useRef<HTMLInputElement | null>(null)
+
+    const dialogRef = useRef<DialogHandle>(null);
+
+    const handleOpenDialog = () => {
+      if (dialogRef.current) {
+        dialogRef.current.open();
+      }
+    }
+
 
 
     const handleOpen = ()=>{
@@ -57,25 +69,30 @@ const CreatePostComponent = ({preview}:{preview?:React.ReactNode}) => {
                 </div>
             </div>
             <div className='px-4 flex flex-col gap-2'>
-                <div className="grid w-full gap-1.5 relative">
-                    <Textarea placeholder="Write Something." onChange={(e)=>setText(e.target.value)}  maxLength={300} className='h-[15rem] rounded-b-none resize-none pt-4' id="message" />
+                <div className="grid w-full gap-1.5 py-2 relative">
+                    <Textarea placeholder="Write Something." onChange={(e)=>setText(e.target.value)}  maxLength={300} className='h-[15rem] rounded-b-none px-6 resize-none pt-6' id="message" />
                     <p className='font-medium text-[10px] absolute top-[0.8rem] right-[1.6rem] flex items-center text-center gap-1'>{300 - text.length} remaining <svg width="16" height="16" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path opacity="0.1" d="M21 10.5C21 16.299 16.299 21 10.5 21C4.70101 21 0 16.299 0 10.5C0 4.70101 4.70101 0 10.5 0C16.299 0 21 4.70101 21 10.5ZM3.32641 10.5C3.32641 14.4619 6.53814 17.6736 10.5 17.6736C14.4619 17.6736 17.6736 14.4619 17.6736 10.5C17.6736 6.53814 14.4619 3.32641 10.5 3.32641C6.53814 3.32641 3.32641 6.53814 3.32641 10.5Z" fill="#5E17EB"/>
                         <path d="M10.5 0C12.7966 2.73863e-08 15.0298 0.752942 16.8575 2.14347C18.6853 3.53399 20.0067 5.48541 20.6194 7.69873L17.4136 8.58618C16.995 7.07403 16.0922 5.74083 14.8435 4.79082C13.5948 3.84082 12.069 3.32641 10.5 3.32641V0Z" fill="#5E17EB"/>
                         </svg>
                     </p>
-                    <div className='absolute p-2 bottom-0 flex gap-2'>
+                    <div className={`absolute p-2 bottom-2 flex gap-2 flex-wrap overflow-y-scroll  h-[4rem] ${images.length > 8 ? "":"no-scrollbar"}`}>
                     {images.map((image, index) => (
-          <div key={index} className="w-[5rem]  h-[5rem] relative border-2 flex items-center rounded-xl">
-            <img src={URL.createObjectURL(image)} alt={`Preview ${index + 1}`} />
-            <button className="absolute text-[12px] top-[-.5rem] right-[-0.2rem] bg-[#e5f2ff] w-[1rem]  rounded" onClick={() => handleRemoveImage(index)}>
+          <div key={index} className="w-[3rem]  h-[3rem] relative border-2 flex items-center rounded-xl">
+            <img src={URL.createObjectURL(image)} className='' alt={`Preview ${index + 1}`} />
+            <button className="absolute text-[12px] top-[-.5rem] right-[-0.2rem] bg-[#e5f2ff] w-[1rem] rounded-full" onClick={() => handleRemoveImage(index)}>
               x
             </button>
           </div>
         ))}
+                     {
+                images.length > 0 && (<button className='rounded-lg border-[#00000026] border w-[3rem] justify-center flex items-center' onClick={handleOpen}>
+                <Image src={"/icons/addimage.svg"} width={25} height={25}  alt='addimage' />
+            </button>)
+            }
                     </div>
                 </div>
-                <div className='px-4 flex justify-between py-1 border-t-0 rounded-t-none  mt-0 rounded-xl border-[1px]'>
+                <div className='px-4 flex justify-between border-t-0 rounded-t-none  mt-0 rounded-xl border-[1px]'>
                     <div className='flex gap-4 px-2'>
                         <button onClick={handleOpen}>
                             <Image src={"/icons/gallery.svg"} width={14} height={14} alt='gallery' />
@@ -95,7 +112,7 @@ const CreatePostComponent = ({preview}:{preview?:React.ReactNode}) => {
                         </button>
                     </div>
                     <div className='flex gap-2'>
-                        <button className='button-gradient text-[12px] font-medium items-center gap-1 text-white flex p-2 rounded-3xl px-4'>
+                        <button onClick={handleOpenDialog} className='button-gradient text-[12px] font-medium items-center gap-1 text-white flex p-2 rounded-3xl px-4'>
                             <svg width="19" height="18" viewBox="0 0 19 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M10.2923 8.7569C10.4572 8.26195 11.1562 8.26195 11.3211 8.7569L12.2885 11.6621C12.5015 12.3007 12.8602 12.881 13.3364 13.3569C13.8125 13.8328 14.393 14.1912 15.0317 14.4038L17.9354 15.3712C18.4304 15.5362 18.4304 16.2351 17.9354 16.4001L15.0302 17.3675C14.3916 17.5804 13.8113 17.9392 13.3355 18.4153C12.8596 18.8915 12.5011 19.4719 12.2885 20.1107L11.3211 23.0144C11.2856 23.1227 11.2167 23.2171 11.1243 23.284C11.0319 23.351 10.9208 23.387 10.8067 23.387C10.6926 23.387 10.5815 23.351 10.4891 23.284C10.3967 23.2171 10.3278 23.1227 10.2923 23.0144L9.32485 20.1092C9.11207 19.4707 8.75354 18.8906 8.27766 18.4147C7.80178 17.9388 7.22162 17.5803 6.58315 17.3675L3.67796 16.4001C3.56958 16.3645 3.4752 16.2956 3.40829 16.2032C3.34138 16.1109 3.30535 15.9997 3.30535 15.8856C3.30535 15.7716 3.34138 15.6604 3.40829 15.568C3.4752 15.4756 3.56958 15.4068 3.67796 15.3712L6.58315 14.4038C7.22162 14.191 7.80178 13.8325 8.27766 13.3566C8.75354 12.8807 9.11207 12.3006 9.32485 11.6621L10.2923 8.7569ZM4.49837 1.10922C4.51988 1.04427 4.56131 0.987745 4.61677 0.947684C4.67224 0.907624 4.73892 0.886061 4.80734 0.886061C4.87576 0.886061 4.94244 0.907624 4.9979 0.947684C5.05337 0.987745 5.0948 1.04427 5.1163 1.10922L5.69674 2.85203C5.95621 3.62895 6.56515 4.23788 7.34207 4.49735L9.08488 5.07779C9.14983 5.0993 9.20635 5.14073 9.24641 5.1962C9.28647 5.25166 9.30804 5.31834 9.30804 5.38676C9.30804 5.45518 9.28647 5.52186 9.24641 5.57732C9.20635 5.63279 9.14983 5.67422 9.08488 5.69573L7.34207 6.27616C6.9589 6.40382 6.61072 6.61897 6.32514 6.90456C6.03955 7.19014 5.8244 7.53832 5.69674 7.92149L5.1163 9.6643C5.0948 9.72925 5.05337 9.78577 4.9979 9.82583C4.94244 9.8659 4.87576 9.88746 4.80734 9.88746C4.73892 9.88746 4.67224 9.8659 4.61677 9.82583C4.56131 9.78577 4.51988 9.72925 4.49837 9.6643L3.91793 7.92149C3.79027 7.53832 3.57512 7.19014 3.28954 6.90456C3.00395 6.61897 2.65578 6.40382 2.27261 6.27616L0.529797 5.69573C0.464846 5.67422 0.408324 5.63279 0.368264 5.57732C0.328203 5.52186 0.306641 5.45518 0.306641 5.38676C0.306641 5.31834 0.328203 5.25166 0.368264 5.1962C0.408324 5.14073 0.464846 5.0993 0.529797 5.07779L2.27261 4.49735C2.65578 4.36969 3.00395 4.15455 3.28954 3.86896C3.57512 3.58338 3.79027 3.2352 3.91793 2.85203L4.49837 1.10922Z" fill="white"/>
                             </svg>
@@ -125,11 +142,11 @@ const CreatePostComponent = ({preview}:{preview?:React.ReactNode}) => {
         </div>
         <div className='bg-[#F3F3F3] px-4 flex flex-col justify-center w-[20rem] rounded-xl'>
             <h2 className='tracking-[4px] text-[9px] font-medium uppercase'>Preview</h2>
-            <PreviewComponent images={images} text={text} />
+            <FacebookPostComponent images={images} text={text} />
         </div>
         
     </div>
-        <div className='w-full flex justify-between'>
+        <div className='w-full flex justify-between p-4'>
             <div>
                 <button className='text-[12px] font-medium text-black bg-white border-[1px] border-black items-center gap-1 flex p-2 rounded-2xl px-4'>
                     Save as Draft
@@ -144,6 +161,9 @@ const CreatePostComponent = ({preview}:{preview?:React.ReactNode}) => {
                 </button>
             </div>
         </div>
+        <CustomDialog  ref={dialogRef}>
+            <AIAssistantComponent />
+        </CustomDialog>
     </div>
   )
 }
